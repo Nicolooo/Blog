@@ -1,7 +1,11 @@
 import React from 'react'
 import Head from 'next/head'
 import { gql, GraphQLClient } from 'graphql-request'
-import Back from '../../comp/Back';
+import { Container, Heading } from '@chakra-ui/layout'
+import { Image, Center,Box, Tag, useColorModeValue } from "@chakra-ui/react"
+import { FacebookProvider, ShareButton } from 'react-facebook';
+
+// import  '../../styles/Home.css'
 export const getServerSideProps = async (pageContext) => {
   const url = "https://api-eu-central-1.graphcms.com/v2/ckv4b4jfm3b0w01xlbkmv5dv1/master";
   const graphQLClient = new GraphQLClient(url, {
@@ -50,19 +54,28 @@ export const getServerSideProps = async (pageContext) => {
 }
 
 const Post = ({post}) => {
-  console.log(post)
-    return (
-         <div className="post">
+  return(
+  <div className="post">
     <Head>
       <title>{post.title}</title>  
     </Head>
-         <Back />
-           <h1>{post.title}</h1>
-           <h4>By: {post.author.name}</h4>
-           <h5>Date: {post.date}</h5>
-           <h5>tags: {post.tags}</h5>
-           <img src={post.coverImage.url} alt="pepo"/>
+        <Box w="100%" p={4} p={20}>
+          <Heading align={'center'}>{post.title}</Heading>
+           <Heading fontSize={20} align={'Center'}>Date: {post.date}</Heading>
+           <Center>
+           <Heading fontSize={20}>Tags:{' '}</Heading>
+           <Tag fontSize={20} align={'center'}>{post.tags}</Tag>
+           </Center>
+           <Center pt={10}> 
+      <a href={`https://www.facebook.com/sharer.php?u=https://nicolo.wtf/posts/${post.slug}`}>Pepo</a>
+          </Center>
+          </Box>
+            <Container pb={10}>
            <p>{post.content.text}</p>
+            </Container>
+             <Center> 
+           <Image src={post.coverImage.url} alt="pepo" w={'15cm'}objectFit="cover" align={'center'} pb={10}/>
+           </Center>
         </div>
     )
 }
